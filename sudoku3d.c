@@ -56,15 +56,16 @@ int main(int argc, char **argv)
 
     // Call solveSudoku and print out result
     printf("\nSolving Sudoku...\n\n");
-    if (solveSudoku(blocks))
-    {
-        printf("Sudoku solved!\n");
-        printSudoku(blocks);
-    }
-    else
-        printf("This Sudoku cannot be solved!\n");
+    solveSudoku(blocks);
+    // if (solveSudoku(blocks))
+    // {
+    //     printf("Sudoku solved!\n");
+    //     printSudoku(blocks);
+    // }
+    // else
+    //     printf("This Sudoku cannot be solved!\n");
 
-    return 0;
+    // return 0;
 }
 
 void printSudoku(int ***arr)
@@ -119,48 +120,49 @@ int solveSudoku(int ***blocks)
 
     int i, j;
     int count = 0;
+    int countj = 0;
     // int ***colPointer;
-    int ***colPointer = *(*(*(blocks + i) + j));// AM I ALLOWED TO DO THIS?
     // int **rowPointer;
-    int **rowPointer = *(blocks + i);;
+
+    //*(blocks + i) iterates us through the columns
+    //*(*(blocks + i) + j) iterates us through the rows
+
+
     //I IS THE iTTH SUBMATRIX! (I/9)
     for (i = 0; i < 9; i++)
     {
-        rowPointer = (int **)malloc(3 * sizeof(int *));
+        *(blocks + i) = (int **)malloc(3 * sizeof(int *));
         //J IS THE COLUMN WITHIN THE SUBMATRIX! (J/3)
         for (j = 0; j < 3; j++)
         {
-            colPointer = (int *)malloc(3 * sizeof(int));
-            //print column:        1,          2,              and 3 of the ith block
-            // printf("%d %d %d\n", colPointer, colPointer + 1, colPointer + 2);
+            *(*(blocks + i) + j) = (int *)malloc(3 * sizeof(int));
+            ///////First Feature: iterate through the columns and find a zero
+            if (*(*(*(blocks + i) + j)) == 0)
+            {
+                count++;
 
-            //first couple if statements need to be able to filter to the very last condition
-            //Once we reach the end of our length (8 because the indexing starts at zero)
-            if (count == 8)
-            {
-                //this condition happens when our board is full
-                if (colPointer[i] == 9)
-                    if (rowPointer[j] == 3)
-                    {
-                        return 0;
-                    }
-                colPointer = 0;
-                rowPointer++;
+                printf("the %d zero we have found!\n", count);
+
+                // printf("Found a zero at %d\n", *(*(*(blocks + i)+j)));
             }
-            //If our i'th element is equal to the cell we are in (because we are iterating through i in our outermost loop )
-            //Value in the column we are currently in
-            if (colPointer == i && colPointer != 0)
+            else
             {
-                colPointer++;
+                countj++;
+
+                printf("the %d n0nzero we have found!\n", countj);
             }
-            //If our j'th element is equal to the cell we are in (because we are iterating through i in our outermost loop )
-            //Searching only for the Zero Entries, as we traverse left to right
-            if (colPointer == 0)
-            {
-                colPointer = i;
-            }
+
+            // if (i = 8)
+            // {
+            //     if (j = 2)
+            //     {
+            //         return 0;
+            //     }
+            //     // *(*(*(blocks + i) + j)) = 0;
+            //     *(*(*(blocks + i) + j)) = 0;
+            //     // *(blocks + i) =  *(blocks + i) + 1;
+            //     *(blocks + i) = *(blocks + i) + 1;
+            // }
         }
-        count++;
     }
-    return 0;
 }
