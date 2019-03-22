@@ -42,9 +42,8 @@ int main(int argc, char **argv)
         for (j = 0; j < 3; j++)
         {
             *(*(blocks + i) + j) = (int *)malloc(3 * sizeof(int));
-            //print column 1, 2, and 3 of the ith block
-
             fscanf(fptr, "%d %d %d", *(*(blocks + i) + j), *(*(blocks + i) + j) + 1, *(*(blocks + i) + j) + 2);
+            //print column:               1,                   2,                  and 3 of the ith block
             printf("%d %d %d\n", *(*(*(blocks+i)+j)), *(*(*(blocks+i)+j)+1), *(*(*(blocks+i)+j)+2));
 
             // printf("%d %d \n", *(*(*(blocks + i) + j)), *(*(*(blocks + i) + j) + 1));
@@ -104,6 +103,13 @@ int solveSudoku(int ***blocks)
     // YOU MUST NOT USE ANY ARRAY NOTATION ([])!
 
     //Your implementation here
+    
+
+    //-traverse the board row by row, and place 1-9 in each cell until the row is complete
+    // -advance to the next row, set the column back to zero, set column zero all the way up to the length -1 
+
+    //our choice: place 1-9 in an empty cell
+    //our constraints:  placement cannot break boards
 
     return 0;
 }
