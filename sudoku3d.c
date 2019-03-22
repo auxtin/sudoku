@@ -44,7 +44,7 @@ int main(int argc, char **argv)
             *(*(blocks + i) + j) = (int *)malloc(3 * sizeof(int));
             fscanf(fptr, "%d %d %d", *(*(blocks + i) + j), *(*(blocks + i) + j) + 1, *(*(blocks + i) + j) + 2);
             //print column:               1,                   2,                  and 3 of the ith block
-            printf("%d %d %d\n", *(*(*(blocks+i)+j)), *(*(*(blocks+i)+j)+1), *(*(*(blocks+i)+j)+2));
+            printf("%d %d %d\n", *(*(*(blocks + i) + j)), *(*(*(blocks + i) + j) + 1), *(*(*(blocks + i) + j) + 2));
 
             // printf("%d %d \n", *(*(*(blocks + i) + j)), *(*(*(blocks + i) + j) + 1));
         }
@@ -103,13 +103,64 @@ int solveSudoku(int ***blocks)
     // YOU MUST NOT USE ANY ARRAY NOTATION ([])!
 
     //Your implementation here
-    
 
     //-traverse the board row by row, and place 1-9 in each cell until the row is complete
-    // -advance to the next row, set the column back to zero, set column zero all the way up to the length -1 
+    // -advance to the next row, set the column back to zero, set column zero all the way up to the length -1
 
     //our choice: place 1-9 in an empty cell
     //our constraints:  placement cannot break boards
 
+    /******************************Properties of Sudoku******************************/
+    //current number cannot be exist in the row or column                            /
+    //current number cannot exit in the block                                        /
+    /********************************************************************************/
+
+    //REMEMBER FOR THE ITERATIONS: I IS THE SUB MATRIX YOU ARE IN,  J IS THE COLUMN YOU RESIDE WITHIN THE SUB MATRIX
+
+    int i, j;
+    int count = 0;
+    // int ***colPointer;
+    int ***colPointer = *(*(*(blocks + i) + j));// AM I ALLOWED TO DO THIS?
+    // int **rowPointer;
+    int **rowPointer = *(blocks + i);;
+    //I IS THE iTTH SUBMATRIX! (I/9)
+    for (i = 0; i < 9; i++)
+    {
+        rowPointer = (int **)malloc(3 * sizeof(int *));
+        //J IS THE COLUMN WITHIN THE SUBMATRIX! (J/3)
+        for (j = 0; j < 3; j++)
+        {
+            colPointer = (int *)malloc(3 * sizeof(int));
+            //print column:        1,          2,              and 3 of the ith block
+            // printf("%d %d %d\n", colPointer, colPointer + 1, colPointer + 2);
+
+            //first couple if statements need to be able to filter to the very last condition
+            //Once we reach the end of our length (8 because the indexing starts at zero)
+            if (count == 8)
+            {
+                //this condition happens when our board is full
+                if (colPointer[i] == 9)
+                    if (rowPointer[j] == 3)
+                    {
+                        return 0;
+                    }
+                colPointer = 0;
+                rowPointer++;
+            }
+            //If our i'th element is equal to the cell we are in (because we are iterating through i in our outermost loop )
+            //Value in the column we are currently in
+            if (colPointer == i && colPointer != 0)
+            {
+                colPointer++;
+            }
+            //If our j'th element is equal to the cell we are in (because we are iterating through i in our outermost loop )
+            //Searching only for the Zero Entries, as we traverse left to right
+            if (colPointer == 0)
+            {
+                colPointer = i;
+            }
+        }
+        count++;
+    }
     return 0;
 }
